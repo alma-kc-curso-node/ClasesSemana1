@@ -6,7 +6,7 @@ var auth = function(claveEsperada) {
             res.status(401).send('no estás autorizado');
             return;
         }
-        next();
+        next();//Pasa al siguiente middleware
 
     }
 };

@@ -6,6 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var app = express();
+//requerimos la conexion a la bbdd con mongoose.
+require('./lib/connectMongoose');
+//Requerimos los Modelos que vamos a mapear con mongoose
+require('./models/Agente');
+require('./models/Usuario');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,13 +28,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 // Para cargar los ficheros estáticos:
 app.use(express.static(path.join(__dirname, 'public')));
+//RUTAS DE PRUEBA
 //Si le queremos poner una ruta virtual a los ficheros estáticos... Le añade /pepe a /public y si no lo pones en la url 
 //   no lo encuentra.
 app.use('/pepe',express.static(path.join(__dirname, 'public')));
-
 app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
+//app.use('/users', require('./routes/users'));
 app.use('/admin', require('./routes/admin'));
+
+//RUTAS del API de prueba de mongoose:
+app.use('/api/v1/agentes', require('./routes/api/v1/agentes'));
+app.use('/api/v1/usuarios', require('./routes/api/v1/usuarios'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
